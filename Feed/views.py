@@ -3,10 +3,13 @@ import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
 from Feed.models import Feed, Reply
 
 # Create your views here.
+@csrf_exempt
 def create(request):
+    print request.body
     post_json = json.loads(request.body)
     try:
         user = User.objects.get(username=post_json.get('username'))
@@ -29,33 +32,41 @@ def create(request):
         return HttpResponse(-1)
 
 
+@csrf_exempt
 def get(request):
     pass
 
 
+@csrf_exempt
 def get_list(request):
     pass
 
 
+@csrf_exempt
 def remove(request):
     pass
 
 
+@csrf_exempt
 def add_reply(request):
     pass
 
 
+@csrf_exempt
 def remove_reply(request):
     pass
 
 
+@csrf_exempt
 def get_reply(request):
     pass
 
 
+@csrf_exempt
 def like(request):
     pass
 
 
+@csrf_exempt
 def dislike(request):
     pass
