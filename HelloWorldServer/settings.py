@@ -12,7 +12,7 @@ else:
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('admin', 'chenrd769@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -166,3 +166,5 @@ LOGGING = {
         },
     }
 }
+
+ALLOWED_HOSTS = ['ec2-54-200-216-0.us-west-2.compute.amazonaws.com', ]
