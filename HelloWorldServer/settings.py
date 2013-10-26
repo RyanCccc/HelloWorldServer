@@ -1,6 +1,14 @@
-# Django settings for HelloWorldServer project.
+from os import path
+HWS_DIR = path.abspath(path.dirname(__file__))
+PROJECT_DIR = path.abspath(path.join(HWS_DIR, '..'))
+PRODUCT_MODE = '/srv/project' in PROJECT_DIR
 
-DEBUG = True
+# Django settings for HelloWorldServer project.
+if PRODUCT_MODE:
+    DEBUG = False
+else:
+    DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -9,15 +17,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+from deploy import get_secret
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'HWS_product' if PRODUCT_MODE else 'HWS_dev',           # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'USER': 'chen769',
+        'PASSWORD': get_secret.get_password(),
+        'HOST': 'mydb.cbehtrcqce74.us-west-2.rds.amazonaws.com',   # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '3306',                      # Set to empty string for default.
     }
 }
 
