@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'Feed',
     'User',
+    'gcm',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -170,3 +171,4 @@ LOGGING = {
 }
 
 ALLOWED_HOSTS = ['ec2-54-200-216-0.us-west-2.compute.amazonaws.com', ]
+GCM_APIKEY = "AIzaSyC8cRzBjWul835_UkZJDkpoRkMm3wKYwRQ"
