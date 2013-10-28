@@ -5,11 +5,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from Feed.models import Feed, Reply
+from django.core import exceptions
+
+ObjectDoesNotExist = -1
+ParseError = -2
 
 # Create your views here.
 @csrf_exempt
 def create(request):
-    print request.body
     post_json = json.loads(request.body)
     try:
         user = User.objects.get(username=post_json.get('username'))
@@ -27,14 +30,24 @@ def create(request):
             dislikes = dislikes,
         )
         return HttpResponse(feed.pk)
+    except exceptions.ObjectDoesNotExist as e:
+        return HttpResponse(ObjectDoesNotExist)
     except Exception as e:
-        print e
-        return HttpResponse(-1)
+        return HttpResponse(ParseError)
 
 
 @csrf_exempt
 def get(request):
-    pass
+    post_json = json.loads(request.body)
+    result = {}
+    try:
+        pk = post_json.get('id')
+        feed = Feed.objects.get(pk=pk)
+        return HttpResponse(feed.get_json())
+    except exceptions.ObjectDoesNotExist as e:
+        return HttpResponse(ObjectDoesNotExist)
+    except Exception as e:
+        return HttpResponse(ParseError)
 
 
 @csrf_exempt
