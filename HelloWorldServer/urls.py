@@ -16,5 +16,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include('User.urls')),
     url(r'^feed/', include('Feed.urls')),
-    url(r'^gcm/', include('gcm.urls')),
+    url(r'', include('gcm.urls')),
 )
