@@ -52,7 +52,7 @@ def get(request):
 
 @csrf_exempt
 def get_list(request):
-    pass
+    return HttpResponse(Feed.get_json_list())
 
 
 @csrf_exempt

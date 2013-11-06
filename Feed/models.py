@@ -16,6 +16,7 @@ class Feed(models.Model):
 
     def get_json(self):
         data = {}
+        data['id']=self.pk
         data['username']=self.user.username
         data['content']=self.content
         data['date']=str(self.date)
@@ -24,6 +25,34 @@ class Feed(models.Model):
         data['likes']=self.likes
         data['dislikes']=self.dislikes
         return json.dumps(data)
+
+    @classmethod
+    def get_json_list(self):
+        data = []
+        feeds = self.objects.all()
+        for feed in feeds:
+            data.append(feed.get_json())
+        return json.dumps(data)
+
+    @classmethod
+    def create_by_json(self, post_json):
+        try:
+            user = User.objects.get(username=post_json.get('username'))
+            content = post_json.get('content')
+            latitude = post_json.get('latitude')
+            longitude = post_json.get('longitude')
+            likes = post_json.get('likes')
+            dislikes = post_json.get('dislikes')
+            feed = Feed.objects.create(
+                user = user,
+                content = content,
+                latitude = latitude,
+                longitude = longitude,
+                likes = likes,
+                dislikes = dislikes,
+            )
+        except Exception as e:
+            raise e
 
 class Reply(models.Model):
     user = models.ForeignKey(User)
