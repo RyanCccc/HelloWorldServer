@@ -14,7 +14,7 @@ class Feed(models.Model):
     likes = models.IntegerField()
     dislikes = models.IntegerField()
 
-    def get_json(self):
+    def get_json(self, get_data=False):
         data = {}
         data['id']=self.pk
         data['username']=self.user.username
@@ -24,6 +24,8 @@ class Feed(models.Model):
         data['longitude']=self.longitude
         data['likes']=self.likes
         data['dislikes']=self.dislikes
+        if get_data:
+            return data
         return json.dumps(data)
 
     @classmethod
@@ -31,7 +33,7 @@ class Feed(models.Model):
         data = []
         feeds = self.objects.all()
         for feed in feeds:
-            data.append(feed.get_json())
+            data.append(feed.get_json(get_data=True))
         return json.dumps(data)
 
     @classmethod
