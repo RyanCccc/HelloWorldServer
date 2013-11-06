@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -7,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def login(request):
-    params = request.POST
+    params = json.loads(request.body)
     username = params.get('username')
     password = params.get('password')
     user = authenticate(username=username, password=password)
@@ -21,7 +23,7 @@ def logout(request):
 
 @csrf_exempt
 def register(request):
-    params = request.POST
+    params = json.loads(request.body)
     username = params.get('username')
     password = params.get('password')
     user = None
