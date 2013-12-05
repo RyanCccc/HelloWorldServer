@@ -28,6 +28,25 @@ class Feed(models.Model):
             return data
         return json.dumps(data)
 
+    def get_reply_json_list(self):
+        data = []
+        replies = self.reply_set.all()
+        for reply in replies:
+            data.append(reply.get_json(get_data=True))
+        return json.dumps(data)
+
+    def add_reply_by_json(self, post_json):
+        try:
+            user = User.objects.get(username=post_json.get('username'))
+            content = post_json.get('content')
+            reply = Reply.objects.create(
+                user = user,
+                feed = self,
+                content = content,
+            )
+        except Exception as e:
+            raise e
+
     @classmethod
     def get_json_list(self):
         data = []
@@ -61,3 +80,15 @@ class Reply(models.Model):
     feed = models.ForeignKey(Feed)
     content = models.CharField(max_length=150)
     date = models.DateTimeField(default=datetime.datetime.now)
+
+    @classmethod
+    def get_json(self, get_data=False):
+            data = {}
+            data['id']=self.pk
+            data['username']=self.user.username
+            data['feed_id']=self.feed.pk
+            data['content']=self.content
+            data['date']=str(self.date)
+            if get_data:
+                return data
+            return json.dumps(data)

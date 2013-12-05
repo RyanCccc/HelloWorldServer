@@ -62,7 +62,17 @@ def remove(request):
 
 @csrf_exempt
 def add_reply(request):
-    pass
+    post_json = json.loads(request.body)
+    result = {}
+    try:
+        pk = post_json.get('id')
+        feed = Feed.objects.get(pk=pk)
+        feed.add_reply_by_json(post_json)
+        return HttpResponse('success')
+    except exceptions.ObjectDoesNotExist as e:
+        return HttpResponse('fail')
+    except Exception as e:
+        return HttpResponse('fail')
 
 
 @csrf_exempt
@@ -72,14 +82,45 @@ def remove_reply(request):
 
 @csrf_exempt
 def get_reply(request):
-    pass
+    post_json = json.loads(request.body)
+    result = {}
+    try:
+        pk = post_json.get('id')
+        feed = Feed.objects.get(pk=pk)
+        return HttpResponse(feed.get_reply_json_list())
+    except exceptions.ObjectDoesNotExist as e:
+        return HttpResponse('fail')
+    except Exception as e:
+        return HttpResponse('fail')
 
 
 @csrf_exempt
 def like(request):
-    pass
+    post_json = json.loads(request.body)
+    result = {}
+    try:
+        pk = post_json.get('id')
+        feed = Feed.objects.get(pk=pk)
+        feed.likes += 1
+        feed.save()
+        return HttpResponse('success')
+    except exceptions.ObjectDoesNotExist as e:
+        return HttpResponse('fail')
+    except Exception as e:
+        return HttpResponse('fail')
 
 
 @csrf_exempt
 def dislike(request):
-    pass
+    post_json = json.loads(request.body)
+    result = {}
+    try:
+        pk = post_json.get('id')
+        feed = Feed.objects.get(pk=pk)
+        feed.dislikes += 1
+        feed.save()
+        return HttpResponse('success')
+    except exceptions.ObjectDoesNotExist as e:
+        return HttpResponse('fail')
+    except Exception as e:
+        return HttpResponse('fail')
