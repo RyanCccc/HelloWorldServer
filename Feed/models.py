@@ -81,7 +81,6 @@ class Reply(models.Model):
     content = models.CharField(max_length=150)
     date = models.DateTimeField(default=datetime.datetime.now)
 
-    @classmethod
     def get_json(self, get_data=False):
             data = {}
             data['id']=self.pk
