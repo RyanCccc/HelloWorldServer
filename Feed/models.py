@@ -88,6 +88,10 @@ class Feed(models.Model):
                 likes = likes,
                 dislikes = dislikes,
             )
+            from gcm.models import get_device_model
+            phones = get_device_model().objects.all()
+            for phone in phones:
+                phone.send_message('New Feed Available!')
         except Exception as e:
             raise e
 
