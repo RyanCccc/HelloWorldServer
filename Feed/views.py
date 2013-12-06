@@ -59,7 +59,7 @@ def get_list(request):
         _filter['longitude'] = post_json.get('longitude')
         _filter['likes'] = post_json.get('likes')
         _filter['num_reply'] = post_json.get('num_reply')
-    return HttpResponse(Feed.get_json_list(_filter))
+    return HttpResponse(Feed.get_json_list(_filter=_filter))
 
 
 @csrf_exempt
