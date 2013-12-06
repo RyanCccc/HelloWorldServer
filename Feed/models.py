@@ -114,11 +114,5 @@ class Reply(models.Model):
                 return data
             return json.dumps(data)
 
-class FeedAdmin(admin.ModelAdmin):
-    fields = ('user', 'content', 'latitude', 'longitude', 'date')
-
-class ReplyAdmin(admin.ModelAdmin):
-    fields = ('user', 'content', 'feed', 'date')
-
-admin.site.register(Feed, FeedAdmin)
-admin.site.register(Reply, ReplyAdmin)
+admin.site.register(Feed)
+admin.site.register(Reply)
