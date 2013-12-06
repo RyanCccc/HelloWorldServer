@@ -39,7 +39,6 @@ def create(request):
 @csrf_exempt
 def get(request):
     post_json = json.loads(request.body)
-    result = {}
     try:
         pk = post_json.get('id')
         feed = Feed.objects.get(pk=pk)
@@ -52,7 +51,15 @@ def get(request):
 
 @csrf_exempt
 def get_list(request):
-    return HttpResponse(Feed.get_json_list())
+    post_json = json.loads(request.body)
+    _filter = {}
+    try:
+        _filter['_range'] = post_json.get('range')
+        _filter['latitude'] = post_json.get('latitude')
+        _filter['longitude'] = post_json.get('longitude')
+        _filter['likes'] = post_json.get('likes')
+        _filter['num_reply'] = post_json.get('num_reply')
+    return HttpResponse(Feed.get_json_list(_filter))
 
 
 @csrf_exempt
@@ -63,7 +70,6 @@ def remove(request):
 @csrf_exempt
 def add_reply(request):
     post_json = json.loads(request.body)
-    result = {}
     try:
         pk = post_json.get('id')
         feed = Feed.objects.get(pk=pk)
@@ -83,7 +89,6 @@ def remove_reply(request):
 @csrf_exempt
 def get_reply(request):
     post_json = json.loads(request.body)
-    result = {}
     try:
         pk = post_json.get('id')
         feed = Feed.objects.get(pk=pk)
@@ -97,7 +102,6 @@ def get_reply(request):
 @csrf_exempt
 def like(request):
     post_json = json.loads(request.body)
-    result = {}
     try:
         pk = post_json.get('id')
         feed = Feed.objects.get(pk=pk)
@@ -113,7 +117,6 @@ def like(request):
 @csrf_exempt
 def dislike(request):
     post_json = json.loads(request.body)
-    result = {}
     try:
         pk = post_json.get('id')
         feed = Feed.objects.get(pk=pk)

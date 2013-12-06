@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 from django.contrib.auth.models import User
+from util import distance_on_unit_sphere
 
 # Create your models here.
 class Feed(models.Model):
@@ -48,11 +49,19 @@ class Feed(models.Model):
             raise e
 
     @classmethod
-    def get_json_list(self):
+    def get_json_list(self, _filter, get_data=False):
         data = []
-        feeds = self.objects.all()
+        feeds = self.objects.filter(likes__gte=_filter['likes'])
         for feed in feeds:
-            data.append(feed.get_json(get_data=True))
+            if distance_on_unit_sphere(
+                feed.latitude,
+                feed.longitude,
+                _filter['latitude'],
+                _filter['longitude']
+            ) < _filter['_range'] and feed.reply_set.count() >= _filter['num_reply']:
+                data.append(feed.get_json(get_data=True))
+        if get_data:
+                return data
         return json.dumps(data)
 
     @classmethod
