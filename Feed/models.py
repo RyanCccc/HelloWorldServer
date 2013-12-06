@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib import admin
 from util import distance_on_unit_sphere
 
 # Create your models here.
@@ -14,6 +15,12 @@ class Feed(models.Model):
     longitude = models.FloatField()
     likes = models.IntegerField()
     dislikes = models.IntegerField()
+
+    def __repr__(self):
+        return self.content
+
+    def __str__(self):
+        return self.content
 
     def get_json(self, get_data=False):
         data = {}
@@ -90,6 +97,12 @@ class Reply(models.Model):
     content = models.CharField(max_length=150)
     date = models.DateTimeField(default=datetime.datetime.now)
 
+    def __repr__(self):
+        return self.content
+
+    def __str__(self):
+        return self.content
+
     def get_json(self, get_data=False):
             data = {}
             data['id']=self.pk
@@ -100,3 +113,12 @@ class Reply(models.Model):
             if get_data:
                 return data
             return json.dumps(data)
+
+class FeedAdmin(admin.ModelAdmin):
+    fields = ('user', 'content', 'latitude', 'longitude', 'date')
+
+class ReplyAdmin(admin.ModelAdmin):
+    fields = ('user', 'content', 'feed', 'date')
+
+admin.site.register(Feed, FeedAdmin)
+admin.site.register(Reply, ReplyAdmin)
