@@ -75,7 +75,7 @@ def remove(request):
 def add_reply(request):
     post_json = json.loads(request.body)
     try:
-        pk = post_json.get('id')
+        pk = post_json.get('feed_id')
         feed = Feed.objects.get(pk=pk)
         feed.add_reply_by_json(post_json)
         return HttpResponse('success')
@@ -94,7 +94,7 @@ def remove_reply(request):
 def get_reply(request):
     post_json = json.loads(request.body)
     try:
-        pk = post_json.get('id')
+        pk = post_json.get('feed_id')
         feed = Feed.objects.get(pk=pk)
         return HttpResponse(feed.get_reply_json_list())
     except exceptions.ObjectDoesNotExist as e:
