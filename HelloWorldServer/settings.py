@@ -9,6 +9,8 @@ if PRODUCT_MODE:
 else:
     DEBUG = True
 
+DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
